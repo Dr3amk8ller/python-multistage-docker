@@ -4,11 +4,14 @@ FROM python:3.9 AS backend-builder
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the contents of the backend directory into the container at /app
-COPY backend/ .
+# Copy only the requirements file to leverage Docker layer caching
+COPY backend/requirements.txt .
 
 # Install dependencies specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the backend code into the container at /app
+COPY backend/ .
 
 # ------------------- Stage 2: Final Stage ------------------------------
 
